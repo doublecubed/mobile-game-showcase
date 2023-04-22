@@ -17,7 +17,7 @@ namespace IslandGame.PuzzleEngine
 		#region VARIABLES
 
 		private int _numberOfRows;
-		private int?[] _rowContent;
+		private int[] _rowContent;
 
 		#endregion
 
@@ -26,14 +26,14 @@ namespace IslandGame.PuzzleEngine
 		public PuzzleNode(int numberOfRows)
 		{
 			_numberOfRows = numberOfRows;
-			_rowContent = new int?[numberOfRows];
+			_rowContent = new int[numberOfRows];
 		}
 		
 		#endregion
 
 		#region METHODS
 
-		public void SetRowValue(int index, int? value)
+		public void SetRowValue(int index, int value)
 		{
 			_rowContent[index] = value;
 		}
@@ -48,19 +48,19 @@ namespace IslandGame.PuzzleEngine
 			return (NumberOfEmptyRows() == _numberOfRows);
 		}
 
-		public int? FirstEmptyRow()
+		public int FirstEmptyRow()
 		{
 			int firstEmptyRow = _numberOfRows - NumberOfEmptyRows();
-			if (firstEmptyRow == _numberOfRows) return null;
 			return firstEmptyRow;
 		}
+		
 		public int NumberOfEmptyRows()
 		{
 			int emptyRowCount = 0;
 			for (int i = 0; i < _rowContent.Length; i++)
 			{
 				int sortedIndex = _rowContent.Length - ( i + 1 );
-				if (_rowContent[sortedIndex] == null)
+				if (_rowContent[sortedIndex] == 0)
 				{
 					emptyRowCount++;
 				}

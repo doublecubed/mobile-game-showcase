@@ -13,7 +13,7 @@ namespace IslandGame.PuzzleEngine
 		public int _numberOfNodes;
 		[SerializeField] private int _numberOfLockedNodes;
 
-		private int?[,] _rowConfiguration = new int?[1, 1];
+		public int?[,] _rowConfiguration = new int?[1, 1];
 
 		public int?[,] ResizeLevel(int numberOfNodes, int rowSize)
 		{
@@ -38,6 +38,6 @@ namespace IslandGame.PuzzleEngine
 
 			return resultArray;
 		}
-		
+
 	}
 }
