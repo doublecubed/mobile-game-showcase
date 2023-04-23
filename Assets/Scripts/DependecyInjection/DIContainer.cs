@@ -7,27 +7,31 @@ using System.Collections.Generic;
 using IslandGame.PuzzleEngine;
 using UnityEngine;
 
-public class DIContainer : MonoBehaviour
+namespace IslandGame.DI
 {
-	private Dictionary<Type, object> _dependencies = new Dictionary<Type, object>();
-
-	private void Awake()
+	public class DIContainer : MonoBehaviour
 	{
-		Register<ILevelReader>(new PuzzleLevelReader());
-	}
+		private Dictionary<Type, object> _dependencies = new Dictionary<Type, object>();
 
-	public void Register<T>(T implementation)
-	{
-		_dependencies[typeof(T)] = implementation;
-	}
-
-	public T Resolve<T>()
-	{
-		object implementation;
-		if (_dependencies.TryGetValue(typeof(T), out implementation))
+		private void Awake()
 		{
-			return (T)implementation;
+			Register<ILevelReader>(new PuzzleLevelReader());
 		}
-		throw new Exception($"Dependency of type {typeof(T)} is not registered.");
+
+		public void Register<T>(T implementation)
+		{
+			_dependencies[typeof(T)] = implementation;
+		}
+
+		public T Resolve<T>()
+		{
+			object implementation;
+			if (_dependencies.TryGetValue(typeof(T), out implementation))
+			{
+				return (T)implementation;
+			}
+
+			throw new Exception($"Dependency of type {typeof(T)} is not registered.");
+		}
 	}
 }

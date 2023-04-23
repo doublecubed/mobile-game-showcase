@@ -15,6 +15,8 @@ public class Terminal : MonoBehaviour
     {
         // Add a listener to the input field to detect when the user presses enter
         inputField.onEndEdit.AddListener(ProcessInput);
+        
+        DisplayPuzzleState();
     }
 
     void ProcessInput(string input)
@@ -32,14 +34,30 @@ public class Terminal : MonoBehaviour
         int secondInt = Convert.ToInt32(second);
         
         solver.RegisterCommand(firstInt, secondInt);
-        
-        // Handle the input here
-        // You can use the input variable to get the user's input
-        // You can use the outputText variable to display output to the user
-        outputText.text += "> " + input + "\n"; // Display the input in the output text
+
+        DisplayPuzzleState();
 
         // Clear the input field
         inputField.text = "";
         inputField.ActivateInputField();
+    }
+
+    private void DisplayPuzzleState()
+    {
+        string output = "Puzzle State:\n";
+        int[,] state = solver.GetPuzzleState();
+        for (int i = 0; i < state.GetLength(0); i++)
+        {
+            output += "Line " + i + ": ";
+            
+            for (int j = 0; j < state.GetLength(1); j++)
+            {
+                output += state[i, j] + ".";
+            }
+
+            output += "\n";
+        }
+        
+        outputText.text = output; // Display the input in the output text
     }
 }

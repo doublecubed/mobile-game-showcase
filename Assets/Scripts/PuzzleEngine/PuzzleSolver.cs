@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using IslandGame.DI;
 
 namespace IslandGame.PuzzleEngine
 {
@@ -213,6 +214,7 @@ namespace IslandGame.PuzzleEngine
 		
 		#region PUZZLE STATE HANDLING
 
+		/*
 		private int[,] CopyPuzzleState()
 		{
 			int row = _puzzleState.GetLength(0);
@@ -229,8 +231,13 @@ namespace IslandGame.PuzzleEngine
 
 			return cloneState;
 		}
-		
-		
+		*/
+
+
+		public bool NodeIsCompleted(int nodeIndex)
+		{
+			return NumberOfRowsTransferable(nodeIndex) == _rowsPerNode;
+		}
 		
 		private int NumberOfRowsTransferable(int nodeIndex)
 		{
@@ -327,7 +334,11 @@ namespace IslandGame.PuzzleEngine
 		{
 			return (_rowsPerNode - 1) - index;
 		}
-		
+
+		public int[,] GetPuzzleState()
+		{
+			return _puzzleState;
+		}
 		
 		#endregion
 		
