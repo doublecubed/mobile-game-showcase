@@ -91,13 +91,22 @@ namespace IslandGame.PuzzleEngine
 		private void ResetPuzzle()
 		{
 			GetLastFinishedLevelNumber();
-			ReadLevel(_levelNumber + 1);
+			ReadLevel(_levelNumber);
 			SetPuzzleState();
 			SetPuzzleParameters();
 			LogPuzzleState();
 			ResetCommandCollections();
 		}
 
+		public void LoadPuzzle(int levelNumber)
+		{
+			ReadLevel(levelNumber);
+			SetPuzzleState();
+			SetPuzzleParameters();
+			LogPuzzleState();
+			ResetCommandCollections();
+		}
+		
 
 		
 		
@@ -238,6 +247,23 @@ namespace IslandGame.PuzzleEngine
 		{
 			return NumberOfRowsTransferable(nodeIndex) == _rowsPerNode;
 		}
+
+		public bool PuzzleIsCompleted()
+		{
+			bool result = true;
+
+			for (int i = 0; i < _numberOfNodes; i++)
+			{
+				if (NodeIsEmpty(i) || NodeIsCompleted(i))
+				{
+					continue;
+				}
+
+				result = false;
+			}
+
+			return result;
+		}
 		
 		private int NumberOfRowsTransferable(int nodeIndex)
 		{
@@ -260,25 +286,9 @@ namespace IslandGame.PuzzleEngine
 
 
 			return transferrableNodes;
-			/*
-			int valueToLookFor = GetNodeFinalRowValue(nodeIndex);
-			Debug.Log("value to look for is: " + valueToLookFor);
-			int transferableRows = 0;
-			
-			for (int i = 0; i < _rowsPerNode; i++)
-			{
-				if (_puzzleState[nodeIndex, ReverseIndex(i)] != 0 && _puzzleState[nodeIndex, ReverseIndex(i)] != valueToLookFor)
-				{
-					break;
-				}
-
-				transferableRows++;
-			}
-
-			return transferableRows;
-			*/
 		}
 
+		
 		private int NumberOfEmptyRows(int nodeIndex)
 		{
 			int emptyRows = 0;

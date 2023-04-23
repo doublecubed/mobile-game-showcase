@@ -5,7 +5,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-namespace IslandGame
+namespace IslandGame.Gameplay
 {
     public class IslandMover : MonoBehaviour
     {

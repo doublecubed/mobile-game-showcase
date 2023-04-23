@@ -10,7 +10,6 @@ using UnityEngine;
 
 namespace IslandGame.PuzzleEngine
 {
-
 	public class PuzzleLevelReader : ILevelReader
 	{
 		#region REFERENCES
