@@ -30,30 +30,17 @@ namespace IslandGame.Gameplay
         
         private void Awake()
         {
-            GeneratePositionVectors();
+            
         }
 
-        private void OnMouseDown()
-        {
-            if (_isLifted)
-            {
-                MoveIsland(_startingPosition);
-            }
-            else
-            {
-                MoveIsland(_liftedPosition);
-            }
-
-            _isLifted = !_isLifted;
-        }
-        
+       
         #endregion
         
         #region METHODS
 
-        private void GeneratePositionVectors()
+        private void GeneratePositionVectors(Vector3 position)
         {
-            _startingPosition = transform.position;
+            _startingPosition = position;
             _liftedPosition = _startingPosition + Vector3.up * _liftDistance;
         }
 

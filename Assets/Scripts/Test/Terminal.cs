@@ -33,7 +33,7 @@ public class Terminal : MonoBehaviour
         string second = input[2].ToString();
         int secondInt = Convert.ToInt32(second);
         
-        solver.RegisterCommand(firstInt, secondInt);
+        solver.RegisterCommand(firstInt, secondInt, out bool commandValid);
 
         DisplayPuzzleState();
 

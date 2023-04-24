@@ -27,7 +27,8 @@ namespace IslandGame.PuzzleEngine
 		private bool[] _lockedNodes;
 		private int _rowsPerNode;
 		private int _numberOfNodes;
-
+		private bool _puzzleLoaded;
+		
 		private Queue<PuzzleCommand> _commandQueue;
 		private Stack<PuzzleCommand> _commandLog;
 		private Dictionary<PuzzleCommand, int[,]> _stateLog;	// each entry in the dictionary shows the state "before" that command, making undo possible
@@ -47,12 +48,14 @@ namespace IslandGame.PuzzleEngine
 			var injectionContainer = FindObjectOfType<DIContainer>();
 			_levelReader = injectionContainer.Resolve<ILevelReader>();
 			
-			ResetPuzzle();
 		}
 
 		private void Update()
 		{
-			HandleCommandExecution();
+			if (_puzzleLoaded)
+			{
+				HandleCommandExecution();
+			}
 		}
 		
 		#endregion
@@ -105,6 +108,7 @@ namespace IslandGame.PuzzleEngine
 			SetPuzzleParameters();
 			LogPuzzleState();
 			ResetCommandCollections();
+			_puzzleLoaded = true;
 		}
 		
 
@@ -139,7 +143,7 @@ namespace IslandGame.PuzzleEngine
 			}
 		}
 		
-		public void RegisterCommand(int exiting, int destination)
+		public void RegisterCommand(int exiting, int destination, out bool commandValid)
 		{
 			Debug.Log("register command received for " + exiting + " to " + destination);
 			
@@ -148,12 +152,18 @@ namespace IslandGame.PuzzleEngine
 			    destination > _numberOfNodes)
 			{
 				Debug.LogError("Requested exit/destination node doesn't exist");
+				commandValid = false;
 				return;
 			}
 			
 			// Check if rows can be transferred.
-			if(!TransferIsPossible(exiting, destination)) return;
+			if (!TransferIsPossible(exiting, destination))
+			{
+				commandValid = false;
+				return;
+			}
 
+			commandValid = true;
 			PuzzleCommand nextCommand = new PuzzleCommand(exiting, destination);
 			QueueCommand(nextCommand);
 
