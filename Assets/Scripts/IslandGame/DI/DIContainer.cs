@@ -2,6 +2,8 @@
 // Onur Ereren - April 2023
 // ------------------------
 
+// Barebones dependency injection container.
+
 using System;
 using System.Collections.Generic;
 using IslandGame.PuzzleEngine;

@@ -35,15 +35,9 @@ namespace IslandGame.PuzzleEngine
 		
 		#endregion
 		
-		#region EVENTS
-		
-		public event Action OnCommandCancelled;
-		
-		#endregion
-
 		#region MONOBEHAVIOUR
 
-		private void Start()
+		private void Awake()
 		{
 			var injectionContainer = FindObjectOfType<DIContainer>();
 			_levelReader = injectionContainer.Resolve<ILevelReader>();

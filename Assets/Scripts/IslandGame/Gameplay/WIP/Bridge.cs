@@ -2,9 +2,8 @@
 // Onur Ereren - April 2023
 // ------------------------
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
+// Bridge object script. Using splines package to draw the bridge. (Currently not implemented)
+
 using UnityEngine;
 using UnityEngine.Splines;
 

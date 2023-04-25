@@ -2,11 +2,9 @@
 // Onur Ereren - April 2023
 // ------------------------
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
+// Bridge generator. Uses Unity's spline package to generate a bridge between islands. (Currently not implemented)
+
 using UnityEngine;
-using UnityEngine.Splines;
 
 namespace IslandGame.Gameplay
 {
@@ -27,12 +25,6 @@ namespace IslandGame.Gameplay
 		#endregion
 
 		#region MONOBEHAVIOUR
-
-		private void Start()
-		{
-			//GenerateBridge(new Vector3(-4f,1f,4.5f), new Vector3(4f,1f,-1.5f), Vector3.right);
-			
-		}
 
 		#endregion
 

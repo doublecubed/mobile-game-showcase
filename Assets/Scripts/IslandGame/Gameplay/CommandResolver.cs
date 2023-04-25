@@ -2,15 +2,11 @@
 // Onur Ereren - April 2023
 // ------------------------
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Numerics;
+// CommandResolver is the bridge between the Gameplay and PuzzleEngine implementations.
+// It interacts with an ISolverAccess interface to register commands to the Puzzle Engine.
+
 using UnityEngine;
 using IslandGame.PuzzleEngine;
-using Quaternion = UnityEngine.Quaternion;
-using Vector3 = UnityEngine.Vector3;
-
 namespace IslandGame.Gameplay
 {
 	public class CommandResolver : MonoBehaviour
@@ -26,6 +22,8 @@ namespace IslandGame.Gameplay
 
 		#region VARIABLES
 
+		public bool ReceiveInput { get; set; }
+		
 		private bool _commandStarted;
 		private int _firstIsland;
 		private int _secondIsland;
@@ -47,8 +45,12 @@ namespace IslandGame.Gameplay
 
 		#region METHODS
 
+
+	
 		public void IslandTapped(int index)
 		{
+			if (!ReceiveInput) return;
+			
 			if (!_commandStarted && _puzzleSolver.GetPuzzleState()[index,0] != 0)
 			{
 				_commandStarted = true;
@@ -72,6 +74,8 @@ namespace IslandGame.Gameplay
 
 		private void RegisterCommand(int firstIsland, int secondIsland)
 		{
+
+			
 			_puzzleSolver.RegisterCommand(firstIsland, secondIsland, out PuzzleCommand commandResponse);
 			if (commandResponse != null)
 			{
@@ -95,6 +99,11 @@ namespace IslandGame.Gameplay
 				_commandStarted = false;
 			}
 
+			if (_puzzleSolver.PuzzleIsCompleted())
+			{
+				_gameDriver.PuzzleCompleted();
+				ReceiveInput = false;
+			}
 			_commandStarted = false;
 		}
 

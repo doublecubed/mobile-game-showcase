@@ -2,17 +2,20 @@
 // Onur Ereren - April 2023
 // ------------------------
 
+// GameDriver is the entry point of the gameplay implementation.
+// GameDriver loads levels, and acts on win condition.
+
 using UnityEngine;
 using IslandGame.PuzzleEngine;
 using IslandGame.UI;
-using IslandGame.Settings;
+
 
 namespace IslandGame.Gameplay
 {
 	public class GameDriver : MonoBehaviour
 	{
 		#region REFERENCES
-
+		
 		[SerializeField] 
 		private PuzzleSolver _puzzleSolver;
 
@@ -43,6 +46,8 @@ namespace IslandGame.Gameplay
 		private void Start()
 		{
 			GetComponentReferences();
+			_uiDriver.ShowMenuPanel();
+			SetupLevel();
 		}
 		
 		
@@ -60,15 +65,11 @@ namespace IslandGame.Gameplay
 		
 		public void StartLevel()
 		{
-			SetupLevel();
-			RemoveMenuPanel();
+			_uiDriver.ShowGamePanel();
 			_gameStarted = true;
+			_commandResolver.ReceiveInput = true;
 		}
 
-		private void RemoveMenuPanel()
-		{
-			_uiDriver.RemoveMenuPanel();
-		}
 		
 		private void SetupLevel()
 		{
@@ -83,7 +84,11 @@ namespace IslandGame.Gameplay
 			SpawnCharacters(numberOfRows);
 		}
 
-
+		public void PuzzleCompleted()
+		{
+			_uiDriver.ShowWinPanel();
+		}
+		
 
 		private void LoadLevelData()
 		{

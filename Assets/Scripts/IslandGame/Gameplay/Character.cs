@@ -2,11 +2,8 @@
 // Onur Ereren - April 2023
 // ------------------------
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
+using UnityEngine;
 
 namespace IslandGame.Gameplay
 {
@@ -21,11 +18,6 @@ namespace IslandGame.Gameplay
 			get { return _renderer; }
 			private set { _renderer = value; }
 		}
-
-
-		#endregion
-
-		#region VARIABLES
 
 		#endregion
 
