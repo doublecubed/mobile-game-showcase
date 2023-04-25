@@ -48,7 +48,7 @@ namespace IslandGame.PuzzleEngine
 		{
 			if (_puzzleLoaded)
 			{
-				HandleCommandExecution();
+				//HandleCommandExecution();
 			}
 		}
 		
@@ -128,6 +128,7 @@ namespace IslandGame.PuzzleEngine
 		{
 			if (_commandQueue.Count > 0)
 			{
+				Debug.Log("Update: command queue is " + _commandQueue.Count + "long");
 				PuzzleCommand currentCommand = _commandQueue.Dequeue();
 				UpdateStatusLog(currentCommand);
 				ExecuteCommand(currentCommand);
@@ -171,11 +172,17 @@ namespace IslandGame.PuzzleEngine
 			
 			nextCommand = new PuzzleCommand(exiting, destination, finalTransferRowAmount, exitingNodeFirstExitingRow, destinationNodeFirstReceivingRow);
 			QueueCommand(nextCommand);
-
+			Debug.Log("Command queued");
+			Debug.Log("Command queue is " + _commandQueue.Count + " long");
+			
+			HandleCommandExecution();		// Since commands are executed instantly, this can be executed after it is logged. Testing
+					
 		}
 		
 		private void ExecuteCommand(PuzzleCommand command)
 		{
+			Debug.Log("Executing command");
+			
 			int exitingIndex = command.ExitingNode;
 			int destinationIndex = command.DestinationNode;
 			

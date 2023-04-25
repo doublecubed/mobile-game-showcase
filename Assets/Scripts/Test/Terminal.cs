@@ -43,6 +43,8 @@ public class Terminal : MonoBehaviour
         
         solver.RegisterCommand(firstInt, secondInt, out PuzzleCommand returningCommand);
 
+        Debug.Log("command registered");
+        
         DisplayPuzzleState();
 
         // Clear the input field
@@ -52,6 +54,8 @@ public class Terminal : MonoBehaviour
 
     private void DisplayPuzzleState()
     {
+        Debug.Log("displaying puzzle state");
+        
         string output = "Puzzle State:\n";
         var state = solver.GetPuzzleState();
         for (int i = 0; i < state.GetLength(0); i++)

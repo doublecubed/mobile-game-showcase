@@ -1,5 +1,15 @@
 # mobile-game-case
 
+ChangeLog: v0.11
+
+* One-turn delay in commands fixed. Now levels are completed as soon as puzzle is solved
+* Level 6 fixed; had duplicate colors
+
+
+----
+
+V0.1
+
 The game implements a puzzle engine implementation in the background, while a gameplay implementation reflects the state of the puzzle engine in the game. 
 
 The puzzle engine uses a txt level loading system. I was developing a scriptable asset system and an editor script for it, but it isn't complete. The progress can be seen in the WIP folder under Scripts\PuzzleEngine.
