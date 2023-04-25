@@ -35,7 +35,8 @@ namespace IslandGame.Gameplay
 			set { _index = value; }
 		}
 		
-		public bool FacingRight { get; set; }
+		//public bool FacingRight { get; set; }
+		public Vector3 FaceDirection { get; set; }
 		
 		#endregion
 	

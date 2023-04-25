@@ -49,17 +49,16 @@ namespace IslandGame.Gameplay
 
 		private void SpawnIslandCharacters(Island island, int rowSize, int islandIndex)
 		{
-			bool reversed = island.FacingRight;
+			Vector3 facing = island.FaceDirection;
 
 			Vector3 firstRowTopPosition = island.transform.position + Vector3.up * _islandDimension * 0.5f +
 			                              Vector3.forward * (_islandDimension - _characterInterval) * 0.5f +
-			                              Vector3.right * (reversed ? 1f : -1f) *
-			                              (_islandDimension - _characterInterval) * 0.5f;
+			                              -facing * (_islandDimension - _characterInterval) * 0.5f;
 			                              
 			                              
 			for (int i = 0; i < rowSize; i++)
 			{
-				SpawnCharacterRow(island, firstRowTopPosition + (Vector3.right * (reversed ? -1f : 1f) * _characterInterval * i), island.transform, (reversed ? -1 : 1) * Vector3.right, rowSize, islandIndex, i);
+				SpawnCharacterRow(island, firstRowTopPosition + (facing * _characterInterval * i), island.transform, facing, rowSize, islandIndex, i);
 			}
 		}
 		

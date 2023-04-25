@@ -25,7 +25,7 @@ namespace IslandGame.Gameplay
 			_gridOccupants = new Transform[rows, columns];
 			GridPositions = new Vector3[rows, columns];
 			
-			GenerateGridPositions(rows, columns,islandDimension, facing);
+			//GenerateGridPositions(rows, columns,islandDimension, facing);
 		}
 		
 		#endregion

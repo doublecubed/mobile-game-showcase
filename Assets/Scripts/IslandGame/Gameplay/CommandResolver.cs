@@ -82,7 +82,7 @@ namespace IslandGame.Gameplay
 
 				for (int i = 0; i < numberOfRowsMoving; i++)
 				{
-					MoveRow(firstIsland, secondIsland, exitingFirstExitRow - i, destinationFirstReceivingRow + i, _gameDriver.IslandScripts[secondIsland].FacingRight ? Vector3.right : Vector3.left, _islandDimension, _numberOfRows);
+					MoveRow(firstIsland, secondIsland, exitingFirstExitRow - i, destinationFirstReceivingRow + i, _gameDriver.IslandScripts[secondIsland].FaceDirection, _islandDimension, _numberOfRows);
 				}
 				
 				_islandMover.MoveIsland(firstIsland);

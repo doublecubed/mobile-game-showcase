@@ -7,7 +7,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 
 namespace IslandGame.Gameplay
@@ -57,28 +60,28 @@ namespace IslandGame.Gameplay
 			Vector3 leftStartPoint = new Vector3(-_islandPlacementXPosition, 0f, (float)numberOfIslandsOnLeft * _islandSpawnZInterval * 0.5f);
 			for (int i = 0; i < numberOfIslandsOnLeft; i++)
 			{
-				_islands[islandNumberIndex] = SpawnIsland((leftStartPoint + i * Vector3.back * _islandSpawnZInterval), islandNumberIndex, numberOfRows, resolver, false);
+				_islands[islandNumberIndex] = SpawnIsland((leftStartPoint + i * Vector3.back * _islandSpawnZInterval), islandNumberIndex, numberOfRows, resolver, Vector3.right);
 				islandNumberIndex++;
 			}
 
 			Vector3 rightStartPoint = new Vector3(_islandPlacementXPosition, 0f, leftStartPoint.z);
 			for (int i = 0; i < numberOfIslandsOnRight; i++)
 			{
-				_islands[islandNumberIndex] = SpawnIsland(rightStartPoint + i * Vector3.back * _islandSpawnZInterval, islandNumberIndex, numberOfRows, resolver, true);
+				_islands[islandNumberIndex] = SpawnIsland(rightStartPoint + i * Vector3.back * _islandSpawnZInterval, islandNumberIndex, numberOfRows, resolver, Vector3.left);
 				islandNumberIndex++;
 			}
 
 			islands = _islands;
 		}
 
-		private Island SpawnIsland(Vector3 position, int islandIndex, int numberOfRows, CommandResolver resolver, bool facingRight)
+		private Island SpawnIsland(Vector3 position, int islandIndex, int numberOfRows, CommandResolver resolver, Vector3 faceDirection)
 		{
 			GameObject island = Instantiate(_islandPrefab, position, Quaternion.identity);
 			Island islandScript = island.GetComponent<Island>();
 			islandScript.Index = islandIndex;
 			islandScript.Resolver = resolver; 
-			islandScript.SetupIslandGrid(numberOfRows, numberOfRows, _islandDimension, facingRight ? Vector3.right : Vector3.left);
-			islandScript.FacingRight = facingRight;
+			islandScript.SetupIslandGrid(numberOfRows, numberOfRows, _islandDimension, faceDirection);
+			islandScript.FaceDirection = faceDirection;
 			return islandScript;
 		}
 
