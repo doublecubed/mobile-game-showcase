@@ -4,6 +4,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace IslandGame.UI
@@ -15,6 +16,7 @@ namespace IslandGame.UI
 		[SerializeField] private GameObject _menuPanel;
 		[SerializeField] private GameObject _gamePanel;
 		[SerializeField] private GameObject _winPanel;
+		[SerializeField] private TextMeshProUGUI _levelLabel;
 		
 		#endregion
 	
@@ -28,6 +30,11 @@ namespace IslandGame.UI
 	
 		#region METHODS
 
+		public void SetLevelLabel(int levelNo)
+		{
+			_levelLabel.text = "LEVEL " + levelNo.ToString();
+		}
+		
 		public void ShowMenuPanel()
 		{
 			_menuPanel.SetActive(true);

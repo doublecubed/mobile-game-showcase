@@ -76,7 +76,9 @@ namespace IslandGame.Gameplay
 		
 		private void SetupLevel()
 		{
-			LoadLevelData();
+			CleanPreviousLevel();
+			LoadLevelData(out int levelNumber);
+			_uiDriver.SetLevelLabel(levelNumber);
 			
 			int numberOfIslands = _puzzleState.GetLength(0);
 			int numberOfRows = _puzzleState.GetLength(1);
@@ -87,6 +89,22 @@ namespace IslandGame.Gameplay
 			SpawnCharacters(numberOfRows);
 		}
 
+		private void CleanPreviousLevel()	// Messy solution, to be tidied up
+		{
+			Island[] islands = FindObjectsOfType<Island>();
+			foreach (Island island in islands)
+			{
+				Destroy(island.gameObject);
+			}
+
+			Character[] characters = FindObjectsOfType<Character>();
+			foreach (Character character in characters)
+			{
+				Destroy(character.gameObject);
+			}
+				
+		}
+		
 		public void PuzzleCompleted()
 		{
 			int currentLevel = PlayerPrefs.GetInt("levelNumber", 0);
@@ -96,9 +114,9 @@ namespace IslandGame.Gameplay
 		}
 		
 
-		private void LoadLevelData()
+		private void LoadLevelData(out int levelNumber)
 		{
-			int levelNumber = PlayerPrefs.GetInt("levelNumber", 0);
+			levelNumber = PlayerPrefs.GetInt("levelNumber", 0);
 			_puzzleSolver.LoadPuzzle(levelNumber);
 			_puzzleState = _puzzleSolver.GetPuzzleState();
 		}
