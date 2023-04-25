@@ -19,6 +19,7 @@ namespace IslandGame.Gameplay
 
 		#region VARIABLES
 
+		[SerializeField]
 		private float _islandDimension;
 		private float _characterInterval;
 		private int[,] _puzzleState;
@@ -34,9 +35,8 @@ namespace IslandGame.Gameplay
 
 		#region METHODS
 
-		public void SpawnCharacters(Island[] islands, int rowSize, float islandDimension, int[,] puzzleState)
+		public void SpawnCharacters(Island[] islands, int rowSize, int[,] puzzleState)
 		{
-			_islandDimension = islandDimension;
 			_characterInterval = _islandDimension / (float)rowSize;
 			_puzzleState = puzzleState;
 			

@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 285468735}
   - component: {fileID: 285468737}
   - component: {fileID: 285468736}
+  - component: {fileID: 285468738}
   m_Layer: 0
   m_Name: GameDriver
   m_TagString: Untagged
@@ -172,14 +173,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _puzzleSolver: {fileID: 1268413073}
   _uiDriver: {fileID: 711850428}
-  _colorSettings: {fileID: 11400000, guid: 18c1820804a988347874a7e67c4e8dec, type: 2}
-  _islandPrefab: {fileID: 73696348928085378, guid: 0bd288f247cefd34186142f31f9ef186,
-    type: 3}
-  _chibiPrefab: {fileID: 5832792182788956911, guid: 0db951adae9979c46b35073529534930,
-    type: 3}
-  _islandSpawnZInterval: 3
-  _islandPlacementXPosition: 4
-  _islandDimension: 2
 --- !u!114 &285468735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,6 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e74f65fd4c97034cb4ea42e341c85d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _puzzleSolver: {fileID: 1268413073}
 --- !u!114 &285468736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,6 +200,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterPrefab: {fileID: 5832792182788956911, guid: 0db951adae9979c46b35073529534930,
     type: 3}
+  _islandDimension: 2
   _colorSettings: {fileID: 11400000, guid: 18c1820804a988347874a7e67c4e8dec, type: 2}
 --- !u!114 &285468737
 MonoBehaviour:
@@ -223,6 +218,20 @@ MonoBehaviour:
     type: 3}
   _islandSpawnZInterval: 3
   _islandPlacementXPosition: 4
+--- !u!114 &285468738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285468732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18b1fd2ea16be1e4482aa267f8328fde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _liftDistance: 1
+  _liftDuration: 0.5
 --- !u!1 &708952529
 GameObject:
   m_ObjectHideFlags: 0

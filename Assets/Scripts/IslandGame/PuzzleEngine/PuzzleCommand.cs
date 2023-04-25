@@ -13,11 +13,17 @@ namespace IslandGame.PuzzleEngine
 	{
 		public readonly int ExitingNode;
 		public readonly int DestinationNode;
+		public readonly int RowsTransferrable;
+		public readonly int ExitingNodeFirstExitRow;
+		public readonly int DestinationNodeFirstRecievingRow;
 
-		public PuzzleCommand(int exiting, int destination)
+		public PuzzleCommand(int exiting, int destination, int rowsTransferrable, int firstExitingRow, int firstReceivingRow)
 		{
 			ExitingNode = exiting;
 			DestinationNode = destination;
+			RowsTransferrable = rowsTransferrable;
+			ExitingNodeFirstExitRow = firstExitingRow;
+			DestinationNodeFirstRecievingRow = firstReceivingRow;
 		}
 
 	}

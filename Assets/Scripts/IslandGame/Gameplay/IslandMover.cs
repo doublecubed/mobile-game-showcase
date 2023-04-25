@@ -16,37 +16,64 @@ namespace IslandGame.Gameplay
         #region VARIABLES
         
         [SerializeField] private float _liftDistance;
-
         [SerializeField] private float _liftDuration;
 
-        private bool _isLifted;
+        private Transform[] _islands;
+        
+        private bool[] _isLifted;
 
-        private Vector3 _startingPosition;
-        private Vector3 _liftedPosition;
+        private float _startingYPosition;
+        private float _liftedYPosition;
+        
 
         #endregion
         
         #region MONOBEHAVIOUR
         
-        private void Awake()
-        {
-            
-        }
-
        
         #endregion
         
         #region METHODS
 
-        private void GeneratePositionVectors(Vector3 position)
+        public void FeedIslands(Transform[] islands)
         {
-            _startingPosition = position;
-            _liftedPosition = _startingPosition + Vector3.up * _liftDistance;
+            _islands = islands;
+            _startingYPosition = _islands[0].position.y;
+            _liftedYPosition = _startingYPosition + _liftDistance;
+            _isLifted = new bool[_islands.Length];
+        }
+        
+        public void MoveIsland(int islandIndex)
+        {
+            if (!_isLifted[islandIndex])        // going up
+            {
+                _islands[islandIndex].DOMoveY(_liftedYPosition, MoveDuration(islandIndex, _liftedYPosition));
+            }   
+            else                                // going down
+            {
+                _islands[islandIndex].DOMoveY(_startingYPosition, MoveDuration(islandIndex, _startingYPosition));
+            }
+
+            _isLifted[islandIndex] = !_isLifted[islandIndex];
+            
         }
 
-        private void MoveIsland(Vector3 targetPosition)
+        private float MoveDuration(int islandIndex, float destinationY)
         {
-            transform.DOMove(targetPosition, _liftDuration);
+            float currentY = _islands[islandIndex].position.y;
+            float ratioTraveled = 0;
+            
+            if (destinationY <= currentY) // going down
+            {
+                ratioTraveled = (_liftedYPosition - currentY) / _liftDistance;
+            }
+            else                        // going up
+            {
+                ratioTraveled = (currentY - _startingYPosition) / _liftDistance;
+            }
+
+            float remainingTime = _liftDuration * (1-ratioTraveled);
+            return remainingTime;
         }
         
         #endregion

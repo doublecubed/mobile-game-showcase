@@ -111,8 +111,6 @@ namespace IslandGame.PuzzleEngine
 			_puzzleLoaded = true;
 		}
 		
-
-		
 		
 		#endregion
 
@@ -143,28 +141,41 @@ namespace IslandGame.PuzzleEngine
 			}
 		}
 		
-		public void RegisterCommand(int exiting, int destination, out bool commandValid)
+		public void RegisterCommand(int exiting, int destination, out PuzzleCommand nextCommand)
 		{
-			Debug.Log("register command received for " + exiting + " to " + destination);
 			
 			// Check if the node numbers are out of range. (Not possible except for testing)
 			if (exiting < 0 || exiting > _numberOfNodes || destination < 0 ||
 			    destination > _numberOfNodes)
 			{
 				Debug.LogError("Requested exit/destination node doesn't exist");
-				commandValid = false;
+				nextCommand = null;
 				return;
 			}
 			
 			// Check if rows can be transferred.
 			if (!TransferIsPossible(exiting, destination))
 			{
-				commandValid = false;
+				nextCommand = null;
 				return;
 			}
 
-			commandValid = true;
-			PuzzleCommand nextCommand = new PuzzleCommand(exiting, destination);
+			
+			// Check how many rows can be transferred
+			int transferableRows = NumberOfRowsTransferable(exiting);
+			int receivableRows = NumberOfEmptyRows(destination);
+			int finalTransferRowAmount = Math.Min(transferableRows, receivableRows);
+			
+			// Exiting node first exiting row
+			int exitingEmptySpaces = NumberOfEmptyRows(exiting);
+			int exitingNodeFirstExitingRow = (_rowsPerNode - 1)- exitingEmptySpaces;
+			
+			// Recieving node first empty row to receive;
+			int destinationEmptySpaces = NumberOfEmptyRows(destination);
+			int destinationNodeFirstReceivingRow = _rowsPerNode - destinationEmptySpaces;
+			
+			
+			nextCommand = new PuzzleCommand(exiting, destination, finalTransferRowAmount, exitingNodeFirstExitingRow, destinationNodeFirstReceivingRow);
 			QueueCommand(nextCommand);
 
 		}
@@ -175,10 +186,10 @@ namespace IslandGame.PuzzleEngine
 			int destinationIndex = command.DestinationNode;
 			
 			// Check how many rows can be transferred
-			int transferableRows = NumberOfRowsTransferable(exitingIndex);
-			int receivableRows = NumberOfEmptyRows(destinationIndex);
+			//int transferableRows = NumberOfRowsTransferable(exitingIndex);
+			//int receivableRows = NumberOfEmptyRows(destinationIndex);
 
-			int finalTransferRowAmount = Math.Min(transferableRows, receivableRows);
+			//int finalTransferRowAmount = Math.Min(transferableRows, receivableRows);
 			
 			int transferValue = GetNodeFinalRowValue(exitingIndex);
 			
@@ -191,7 +202,7 @@ namespace IslandGame.PuzzleEngine
 					_puzzleState[destinationIndex, i] = transferValue;
 					transferredRows++;
 
-					if (transferredRows >= finalTransferRowAmount) break;
+					if (transferredRows >= command.RowsTransferrable) break;
 				}
 			}
 			
@@ -203,7 +214,7 @@ namespace IslandGame.PuzzleEngine
 				{
 					_puzzleState[exitingIndex, ReverseIndex(i)] = 0;
 					emptiedRows++;
-					if (emptiedRows >= finalTransferRowAmount) break;
+					if (emptiedRows >= command.RowsTransferrable) break;
 				}
 			}
 
