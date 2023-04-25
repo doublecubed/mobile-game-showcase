@@ -24,6 +24,9 @@ namespace IslandGame.Gameplay
 		#region VARIABLES
 
 		[SerializeField] 
+		private float _islandDimension;
+		
+		[SerializeField] 
 		private float _islandSpawnZInterval;
 
 		[SerializeField] 
@@ -74,7 +77,7 @@ namespace IslandGame.Gameplay
 			Island islandScript = island.GetComponent<Island>();
 			islandScript.Index = islandIndex;
 			islandScript.Resolver = resolver; 
-			islandScript.SetupIslandGrid(numberOfRows, numberOfRows);
+			islandScript.SetupIslandGrid(numberOfRows, numberOfRows, _islandDimension, facingRight ? Vector3.right : Vector3.left);
 			islandScript.FacingRight = facingRight;
 			return islandScript;
 		}

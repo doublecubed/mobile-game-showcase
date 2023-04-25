@@ -5,8 +5,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 using IslandGame.PuzzleEngine;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 namespace IslandGame.Gameplay
 {
@@ -14,6 +17,7 @@ namespace IslandGame.Gameplay
 	{
 		#region REFERENCES
 
+		private GameDriver _gameDriver;
 		private IslandMover _islandMover;
 		[SerializeField]
 		private PuzzleSolver _puzzleSolver;
@@ -25,6 +29,9 @@ namespace IslandGame.Gameplay
 		private bool _commandStarted;
 		private int _firstIsland;
 		private int _secondIsland;
+
+		private float _islandDimension = 2f;
+		private int _numberOfRows = 4;
 		
 		#endregion
 
@@ -33,7 +40,7 @@ namespace IslandGame.Gameplay
 		private void Start()
 		{
 			_islandMover = GetComponent<IslandMover>();
-			
+			_gameDriver = GetComponent<GameDriver>();
 		}
 
 		#endregion
@@ -42,7 +49,7 @@ namespace IslandGame.Gameplay
 
 		public void IslandTapped(int index)
 		{
-			if (!_commandStarted)
+			if (!_commandStarted && _puzzleSolver.GetPuzzleState()[index,0] != 0)
 			{
 				_commandStarted = true;
 				_firstIsland = index;
@@ -68,14 +75,62 @@ namespace IslandGame.Gameplay
 			_puzzleSolver.RegisterCommand(firstIsland, secondIsland, out PuzzleCommand commandResponse);
 			if (commandResponse != null)
 			{
-				_islandMover.MoveIsland(secondIsland);
+				//_islandMover.MoveIsland(secondIsland);
+				int numberOfRowsMoving = commandResponse.RowsTransferrable;
+				int exitingFirstExitRow = commandResponse.ExitingNodeFirstExitRow;
+				int destinationFirstReceivingRow = commandResponse.DestinationNodeFirstRecievingRow;
+
+				for (int i = 0; i < numberOfRowsMoving; i++)
+				{
+					MoveRow(firstIsland, secondIsland, exitingFirstExitRow - i, destinationFirstReceivingRow + i, _gameDriver.IslandScripts[secondIsland].FacingRight ? Vector3.right : Vector3.left, _islandDimension, _numberOfRows);
+				}
+				
+				_islandMover.MoveIsland(firstIsland);
+				//_islandMover.MoveIsland(secondIsland);
+				_commandStarted = false;
 			}
 			else
 			{
 				_islandMover.MoveIsland(firstIsland);
+				_commandStarted = false;
 			}
 
 			_commandStarted = false;
+		}
+
+		private void MoveRow(int islandFrom, int islandTo, int rowFrom, int rowTo, Vector3 targetFacing, float islandDimension, int numberOfRows)
+		{
+			Debug.Log("move row running");
+			
+			Transform[,] exitingOccupants = _gameDriver.IslandScripts[islandFrom].IslandGrid.GetOccupantGrid();
+			Transform[,] enteringOccupants = _gameDriver.IslandScripts[islandTo].IslandGrid.GetOccupantGrid();
+			
+			for (int i = 0; i < exitingOccupants.GetLength(1); i++)
+			{
+				exitingOccupants[rowFrom, i].parent = _gameDriver.IslandScripts[islandTo].transform;
+				
+				exitingOccupants[rowFrom, i].position = TargetPosition(_gameDriver.IslandScripts[islandTo].transform,
+					rowTo, i, targetFacing, islandDimension, numberOfRows);
+				exitingOccupants[rowFrom, i].rotation = Quaternion.LookRotation(targetFacing);
+
+				enteringOccupants[rowTo, i] = exitingOccupants[rowFrom, i];
+				exitingOccupants[rowFrom, i] = null;
+			}
+			
+
+		}
+
+		private Vector3 TargetPosition(Transform islandTo, int row, int position, Vector3 targetFacing, float islandDimension, int numberOfRows)
+		{
+			float characterInterval = islandDimension / numberOfRows;
+
+			Vector3 basePosition = islandTo.position + Vector3.up * islandDimension * 0.5f;
+			Vector3 xAddedPosition = basePosition + -targetFacing * (0.5f * characterInterval) * (numberOfRows - 1) +
+			                         targetFacing * characterInterval * row;
+			Vector3 zAddedPosition = xAddedPosition +
+			                         Vector3.forward * (0.5f * characterInterval) * (numberOfRows - 1) +
+			                         Vector3.back * characterInterval * position;
+			return zAddedPosition;
 		}
 		
 		#endregion

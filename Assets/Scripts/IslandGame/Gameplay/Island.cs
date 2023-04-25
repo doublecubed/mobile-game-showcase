@@ -51,9 +51,9 @@ namespace IslandGame.Gameplay
 	
 		#region METHODS
 
-		public void SetupIslandGrid(int rows, int columns)
+		public void SetupIslandGrid(int rows, int columns, float islandDimension, Vector3 facing)
 		{
-			IslandGrid = new IslandGrid(rows, columns);
+			IslandGrid = new IslandGrid(rows, columns, islandDimension, facing);
 		}
 		
 		

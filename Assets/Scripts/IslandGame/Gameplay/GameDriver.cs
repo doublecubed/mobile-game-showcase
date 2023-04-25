@@ -32,7 +32,7 @@ namespace IslandGame.Gameplay
 		private bool _gameStarted;
 
 		private Transform[] _islands;
-		private Island[] _islandScripts;
+		public Island[] IslandScripts { get; private set; }
 		
 		private int[,] _puzzleState;
 		
@@ -95,8 +95,8 @@ namespace IslandGame.Gameplay
 		private void SpawnIslands(int numberOfIslands, int numberOfRows)
 		{
 			_islandSpawner.SpawnIslands(numberOfIslands, numberOfRows, _commandResolver, out Island[] islands);
-			_islandScripts = islands;
-			_islands = IslandTransforms(_islandScripts);
+			IslandScripts = islands;
+			_islands = IslandTransforms(IslandScripts);
 		}
 
 		private void FeedIslandsToIslandMover()
@@ -106,7 +106,7 @@ namespace IslandGame.Gameplay
 		
 		private void SpawnCharacters(int numberOfRows)
 		{
-			_characterSpawner.SpawnCharacters(_islandScripts, numberOfRows, _puzzleState);
+			_characterSpawner.SpawnCharacters(IslandScripts, numberOfRows, _puzzleState);
 		}
 
 		private Transform[] IslandTransforms(Island[] scripts)

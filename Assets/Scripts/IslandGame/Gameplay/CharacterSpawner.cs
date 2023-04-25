@@ -59,11 +59,11 @@ namespace IslandGame.Gameplay
 			                              
 			for (int i = 0; i < rowSize; i++)
 			{
-				SpawnCharacterRow(firstRowTopPosition + (Vector3.right * (reversed ? -1f : 1f) * _characterInterval * i), island.transform, (reversed ? -1 : 1) * Vector3.right, rowSize, islandIndex, i);
+				SpawnCharacterRow(island, firstRowTopPosition + (Vector3.right * (reversed ? -1f : 1f) * _characterInterval * i), island.transform, (reversed ? -1 : 1) * Vector3.right, rowSize, islandIndex, i);
 			}
 		}
 		
-		private void SpawnCharacterRow(Vector3 topPosition, Transform parent, Vector3 facing, int rowSize, int islandIndex, int rowIndex)
+		private void SpawnCharacterRow(Island island, Vector3 topPosition, Transform parent, Vector3 facing, int rowSize, int islandIndex, int rowIndex)
 		{
 			int rowColorIndex = _puzzleState[islandIndex, rowIndex];
 			
@@ -73,7 +73,9 @@ namespace IslandGame.Gameplay
 			
 			for (int i = 0; i < rowSize; i++)
 			{
-				SpawnCharacter(topPosition + Vector3.back * _characterInterval * i, parent, facing, rowColor);
+
+				Transform characterTransform = SpawnCharacter(topPosition + Vector3.back * _characterInterval * i, parent, facing, rowColor);
+				island.IslandGrid.SetOccupant(rowIndex, i, characterTransform);
 			}
 		}
 		
@@ -84,6 +86,8 @@ namespace IslandGame.Gameplay
 			return character.transform;
 		}
 
+		
+		
 		#endregion
 
 	}
