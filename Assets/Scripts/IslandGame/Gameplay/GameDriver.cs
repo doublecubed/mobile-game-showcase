@@ -32,8 +32,6 @@ namespace IslandGame.Gameplay
 
 		#region VARIABLES
 
-		private bool _gameStarted;
-
 		private Transform[] _islands;
 		public Island[] IslandScripts { get; private set; }
 		
@@ -66,10 +64,15 @@ namespace IslandGame.Gameplay
 		public void StartLevel()
 		{
 			_uiDriver.ShowGamePanel();
-			_gameStarted = true;
 			_commandResolver.ReceiveInput = true;
 		}
 
+		public void NextLevel()
+		{
+			SetupLevel();
+			_uiDriver.ShowGamePanel();
+			_commandResolver.ReceiveInput = true;
+		}
 		
 		private void SetupLevel()
 		{
@@ -86,7 +89,10 @@ namespace IslandGame.Gameplay
 
 		public void PuzzleCompleted()
 		{
+			int currentLevel = PlayerPrefs.GetInt("levelNumber", 0);
+			PlayerPrefs.SetInt("levelNumber", currentLevel + 1);
 			_uiDriver.ShowWinPanel();
+			_commandResolver.ReceiveInput = false;
 		}
 		
 

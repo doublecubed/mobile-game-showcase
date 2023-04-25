@@ -5,6 +5,7 @@
 // CommandResolver is the bridge between the Gameplay and PuzzleEngine implementations.
 // It interacts with an ISolverAccess interface to register commands to the Puzzle Engine.
 
+using System;
 using UnityEngine;
 using IslandGame.PuzzleEngine;
 namespace IslandGame.Gameplay
@@ -41,6 +42,11 @@ namespace IslandGame.Gameplay
 			_gameDriver = GetComponent<GameDriver>();
 		}
 
+		private void Update()
+		{
+
+		}
+
 		#endregion
 
 		#region METHODS
@@ -74,7 +80,6 @@ namespace IslandGame.Gameplay
 
 		private void RegisterCommand(int firstIsland, int secondIsland)
 		{
-
 			
 			_puzzleSolver.RegisterCommand(firstIsland, secondIsland, out PuzzleCommand commandResponse);
 			if (commandResponse != null)
@@ -104,6 +109,7 @@ namespace IslandGame.Gameplay
 				_gameDriver.PuzzleCompleted();
 				ReceiveInput = false;
 			}
+			
 			_commandStarted = false;
 		}
 

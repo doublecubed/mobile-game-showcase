@@ -22,17 +22,17 @@ namespace IslandGame.PuzzleEngine
 		private int[,] _nodeContent;
 		private int _numberOfRows;
 
+		private PuzzleLevelContainer _levelContainer;
 		
 		#endregion
 
-		#region VARIABLES
+		#region CONSTRUCTOR
 
+		public PuzzleLevelReader(PuzzleLevelContainer levelContainer)
+		{
+			_levelContainer = levelContainer;
+		}
 		
-		
-		#endregion
-
-		#region MONOBEHAVIOUR
-
 		#endregion
 
 		#region METHODS
@@ -57,8 +57,11 @@ namespace IslandGame.PuzzleEngine
 
 		private void ReadLevelFile(int levelNo)
 		{
-			string levelPath = FullLevelPath(levelNo);
-			_lineContents = File.ReadAllLines(levelPath);
+			//string levelPath = FullLevelPath(levelNo);
+			//_lineContents = File.ReadAllLines(levelPath);
+
+			_lineContents = _levelContainer.levelFiles[levelNo].text
+				.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
 		}
 
 		private void ParseLevelContent()

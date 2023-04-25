@@ -13,12 +13,29 @@ namespace IslandGame.DI
 {
 	public class DIContainer : MonoBehaviour
 	{
+		#region REFERENCES
+
+		private PuzzleLevelContainer _levelContainer;
+		
+		#endregion
+		
+		#region VARIABLES
+		
 		private Dictionary<Type, object> _dependencies = new Dictionary<Type, object>();
 
+		#endregion
+		
+		#region MONOBEHAVIOUR
+		
 		private void Awake()
 		{
-			Register<ILevelReader>(new PuzzleLevelReader());
+			_levelContainer = FindObjectOfType<PuzzleLevelContainer>();
+			Register<ILevelReader>(new PuzzleLevelReader(_levelContainer));
 		}
+		
+		#endregion
+		
+		#region METHODS
 
 		public void Register<T>(T implementation)
 		{
@@ -35,5 +52,7 @@ namespace IslandGame.DI
 
 			throw new Exception($"Dependency of type {typeof(T)} is not registered.");
 		}
+		
+		#endregion
 	}
 }

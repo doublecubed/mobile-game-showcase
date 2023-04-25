@@ -16,11 +16,19 @@ public class Terminal : MonoBehaviour
         // Add a listener to the input field to detect when the user presses enter
         inputField.onEndEdit.AddListener(ProcessInput);
         
-        DisplayPuzzleState();
+        
+        //DisplayPuzzleState();
     }
 
     void ProcessInput(string input)
     {
+        if (solver.GetPuzzleState() == null)
+        {
+            solver.LoadPuzzle(Convert.ToInt32(input.ToString()));
+            DisplayPuzzleState();
+            return;
+        }
+        
         if (input == "undo")
         {
             solver.UndoLastCommand();
@@ -45,7 +53,7 @@ public class Terminal : MonoBehaviour
     private void DisplayPuzzleState()
     {
         string output = "Puzzle State:\n";
-        int[,] state = solver.GetPuzzleState();
+        var state = solver.GetPuzzleState();
         for (int i = 0; i < state.GetLength(0); i++)
         {
             output += "Line " + i + ": ";
