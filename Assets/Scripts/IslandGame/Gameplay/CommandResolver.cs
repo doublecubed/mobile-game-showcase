@@ -5,9 +5,10 @@
 // CommandResolver is the bridge between the Gameplay and PuzzleEngine implementations.
 // It interacts with an ISolverAccess interface to register commands to the Puzzle Engine.
 
-using System;
 using UnityEngine;
 using IslandGame.PuzzleEngine;
+using IslandGame.Feedback;
+
 namespace IslandGame.Gameplay
 {
 	public class CommandResolver : MonoBehaviour
@@ -16,8 +17,9 @@ namespace IslandGame.Gameplay
 
 		private GameDriver _gameDriver;
 		private IslandMover _islandMover;
-		[SerializeField]
-		private PuzzleSolver _puzzleSolver;
+
+		public AudioPlayer EffectPlayer;
+		public PuzzleSolver Solver;
 		
 		#endregion
 
@@ -56,8 +58,10 @@ namespace IslandGame.Gameplay
 		public void IslandTapped(int index)
 		{
 			if (!ReceiveInput) return;
+		
+			EffectPlayer.PlayClip("islandTap");
 			
-			if (!_commandStarted && _puzzleSolver.GetPuzzleState()[index,0] != 0)
+			if (!_commandStarted && Solver.GetPuzzleState()[index,0] != 0)
 			{
 				_commandStarted = true;
 				_firstIsland = index;
@@ -81,10 +85,10 @@ namespace IslandGame.Gameplay
 		private void RegisterCommand(int firstIsland, int secondIsland)
 		{
 			
-			_puzzleSolver.RegisterCommand(firstIsland, secondIsland, out PuzzleCommand commandResponse);
+			Solver.RegisterCommand(firstIsland, secondIsland, out PuzzleCommand commandResponse);
 			if (commandResponse != null)
 			{
-				//_islandMover.MoveIsland(secondIsland);
+				
 				int numberOfRowsMoving = commandResponse.RowsTransferrable;
 				int exitingFirstExitRow = commandResponse.ExitingNodeFirstExitRow;
 				int destinationFirstReceivingRow = commandResponse.DestinationNodeFirstRecievingRow;
@@ -95,8 +99,9 @@ namespace IslandGame.Gameplay
 				}
 				
 				_islandMover.MoveIsland(firstIsland);
-				//_islandMover.MoveIsland(secondIsland);
 				_commandStarted = false;
+				
+				EffectPlayer.PlayClip("characterWalk", 1f);
 			}
 			else
 			{
@@ -104,7 +109,7 @@ namespace IslandGame.Gameplay
 				_commandStarted = false;
 			}
 
-			if (_puzzleSolver.PuzzleIsCompleted())
+			if (Solver.PuzzleIsCompleted())
 			{
 				_gameDriver.PuzzleCompleted();
 				ReceiveInput = false;

@@ -8,6 +8,7 @@
 using UnityEngine;
 using IslandGame.PuzzleEngine;
 using IslandGame.UI;
+using UnityEngine.Serialization;
 
 
 namespace IslandGame.Gameplay
@@ -16,11 +17,9 @@ namespace IslandGame.Gameplay
 	{
 		#region REFERENCES
 		
-		[SerializeField] 
-		private PuzzleSolver _puzzleSolver;
-
-		[SerializeField] 
-		private UIDriver _uiDriver;
+		
+		public PuzzleSolver PuzzleSolver;
+		public UIDriver UIDriver;
 
 		private CommandResolver _commandResolver;
 
@@ -44,7 +43,7 @@ namespace IslandGame.Gameplay
 		private void Start()
 		{
 			GetComponentReferences();
-			_uiDriver.ShowMenuPanel();
+			UIDriver.ShowMenuPanel();
 			SetupLevel();
 		}
 		
@@ -63,14 +62,14 @@ namespace IslandGame.Gameplay
 		
 		public void StartLevel()
 		{
-			_uiDriver.ShowGamePanel();
+			UIDriver.ShowGamePanel();
 			_commandResolver.ReceiveInput = true;
 		}
 
 		public void NextLevel()
 		{
 			SetupLevel();
-			_uiDriver.ShowGamePanel();
+			UIDriver.ShowGamePanel();
 			_commandResolver.ReceiveInput = true;
 		}
 		
@@ -78,7 +77,7 @@ namespace IslandGame.Gameplay
 		{
 			CleanPreviousLevel();
 			LoadLevelData(out int levelNumber);
-			_uiDriver.SetLevelLabel(levelNumber);
+			UIDriver.SetLevelLabel(levelNumber);
 			
 			int numberOfIslands = _puzzleState.GetLength(0);
 			int numberOfRows = _puzzleState.GetLength(1);
@@ -109,7 +108,7 @@ namespace IslandGame.Gameplay
 		{
 			int currentLevel = PlayerPrefs.GetInt("levelNumber", 0);
 			PlayerPrefs.SetInt("levelNumber", currentLevel + 1);
-			_uiDriver.ShowWinPanel();
+			UIDriver.ShowWinPanel();
 			_commandResolver.ReceiveInput = false;
 		}
 		
@@ -117,8 +116,8 @@ namespace IslandGame.Gameplay
 		private void LoadLevelData(out int levelNumber)
 		{
 			levelNumber = PlayerPrefs.GetInt("levelNumber", 0);
-			_puzzleSolver.LoadPuzzle(levelNumber);
-			_puzzleState = _puzzleSolver.GetPuzzleState();
+			PuzzleSolver.LoadPuzzle(levelNumber);
+			_puzzleState = PuzzleSolver.GetPuzzleState();
 		}
 		
 		private void SpawnIslands(int numberOfIslands, int numberOfRows)
