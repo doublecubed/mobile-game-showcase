@@ -1,7 +1,11 @@
 # mobile-game-case
 
-ChangeLog: v0.11
+ChageLog: v0.1.2
+* UI elements dressed
+* Audio added
+* Haptic feedback added
 
+ChangeLog: v0.1.1
 * One-turn delay in commands fixed. Now levels are completed as soon as puzzle is solved
 * Level 6 fixed; had duplicate colors
 
