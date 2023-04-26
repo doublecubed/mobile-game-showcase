@@ -60,6 +60,7 @@ namespace IslandGame.Gameplay
 			if (!ReceiveInput) return;
 		
 			EffectPlayer.PlayClip("islandTap");
+			Handheld.Vibrate();
 			
 			if (!_commandStarted && Solver.GetPuzzleState()[index,0] != 0)
 			{
@@ -102,6 +103,7 @@ namespace IslandGame.Gameplay
 				_commandStarted = false;
 				
 				EffectPlayer.PlayClip("characterWalk", 1f);
+				Handheld.Vibrate();
 			}
 			else
 			{
